@@ -60,7 +60,6 @@ INSTALLED_APPS += [
 INSTALLED_APPS += [
     'django_filters',
     'corsheaders',
-    'django_api_proxy',
 ]
 
 
@@ -248,7 +247,7 @@ TELEGRAM_CHANNEL_ID = env.int('TELEGRAM_CHANNEL_ID', ''),
 # --Swagger settings:
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Iqro Website',
-        'DESCRIPTION': 'Your project description',
+        'DESCRIPTION': 'Official Iqro Agency Website',
     'VERSION': '1.0.0',
 
     'SERVE_PERMISSIONS': [

@@ -4,6 +4,13 @@ from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 from .serializers import *
+import telebot
+from config import settings
+
+
+def send_telegram_message(message):
+    bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN[0])
+    bot.send_message(settings.TELEGRAM_CHANNEL_ID[0], message)
 
 
 
