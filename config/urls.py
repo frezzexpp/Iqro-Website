@@ -10,12 +10,6 @@ from imageproxy.views import ImageProxyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # JWT auftentifikatsiya:
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshSlidingView.as_view(), name='token_refresh'),
-
-
     # Proxy Img
     path('image-proxy/', ImageProxyView.as_view(), name='proxy-image'),
 

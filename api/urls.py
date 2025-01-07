@@ -5,6 +5,7 @@ from project.urls import urlpatterns as showcase
 from contact.urls import urlpatterns as contact_urls
 from homepage.urls import url_patterns as home_page
 from about.urls import urlpatterns as about_us
+from users.urls import urlpatterns as users_urls
 from project.views import UploadImage
 
 
@@ -15,6 +16,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('auth/', include('djoser.urls.jwt')),
 ]
 
 urlpatterns += doc_urls
@@ -22,3 +24,4 @@ urlpatterns += showcase
 urlpatterns += contact_urls
 urlpatterns += home_page
 urlpatterns += about_us
+urlpatterns += users_urls

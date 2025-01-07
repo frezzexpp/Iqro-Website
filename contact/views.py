@@ -9,10 +9,15 @@ from config import settings
 
 
 def send_telegram_message(message):
-    bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN[0])
-    bot.send_message(settings.TELEGRAM_CHANNEL_ID[0], message)
-
-
+    bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
+    try:
+        bot.send_message(
+            chat_id=settings.TELEGRAM_CHANNEL_ID,
+            text=message,
+            parse_mode=None  # Yoki 'Markdown'/'HTML' bo'lishi mumkin
+        )
+    except telebot.apihelper.ApiTelegramException as e:
+        print(f"Telegram Error: {e}")
 
 # Contact Pagination:
 class ContactPagination(PageNumberPagination):
@@ -29,7 +34,6 @@ class ContactPagination(PageNumberPagination):
     create=extend_schema(summary='create contact project', tags=['Contact']),
     destroy=extend_schema(summary='destroy contact project', tags=['Contact']
 ))
-
 class CRUDContact(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,
                    mixins.DestroyModelMixin,
@@ -41,3 +45,16 @@ class CRUDContact(mixins.CreateModelMixin,
     filter_backends = [SearchFilter]
     search_fields = ['first_name', 'phone']
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        data = instance.create_at
+        date = str(data)[0:10]
+        time = str(data)[11:19]
+        message = (
+            f"Contact ({date}/{time}): \n"
+            f"Name: {getattr(instance, 'name', 'N/A')}\n"
+            f"Phone: {getattr(instance, 'phone', 'N/A')}\n"
+            f"Email: {getattr(instance, 'email', 'N/A')}\n"
+            f"Message: {getattr(instance, 'message', 'N/A')}"
+        )
+        send_telegram_message(message)
